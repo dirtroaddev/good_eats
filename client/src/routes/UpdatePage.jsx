@@ -1,9 +1,13 @@
 import React from "react";
+import UpdateRestaurant from "../components/UpdateRestaurant";
 
 
 const Home = () => {
     return (
-        <div>Update</div>
+        <div>
+            <h1 className="text-center">Update Restaurant</h1>
+            <UpdateRestaurant />
+        </div>
     )
 }
 
