@@ -2,6 +2,7 @@ import React,{useContext, useEffect}  from "react";
 import { useHistory } from "react-router";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
+import StarRating from "./StarRating";
 
 const RestaurantList = () => {
     const { restaurants, setRestaurants } = useContext(RestaurantsContext)
@@ -18,8 +19,10 @@ const RestaurantList = () => {
         }
        fetchData();
     }, [])
-    const handleDelete = async (id) => {
+    const handleDelete = async (e, id) => {
+        e.stopPropagation();
         try {
+            
            const response = await RestaurantFinder.delete(`/${id}`);
            setRestaurants(restaurants.filter((restaurant) => restaurant.id !== id));
            
@@ -28,9 +31,28 @@ const RestaurantList = () => {
         }
     }
 
-    const handleUpdate = (id) => {
+    const handleUpdate = (e, id) => {
+        e.stopPropagation();
         history.push(`/restaurants/${id}/update`);
     }
+
+    const handleRestaurantSelect = (id) => {
+        history.push(`/restaurants/${id}`)
+        
+    }
+
+    const renderRating = (restaurant) => {
+        if(!restaurant.count) {
+            return <span className="text-warning">0 reviews</span>
+        }
+        return(
+            <>
+                <StarRating rating={restaurant.average_rating} />
+                <span className="text-warning ml-1">({restaurant.count})</span>
+            </>
+        )
+    }
+
     return(
         <div className="list-group">
             <table className="table table-hover table-dark">
@@ -49,13 +71,13 @@ const RestaurantList = () => {
                     {restaurants && restaurants.map(el => {
                        
                        return(
-                        <tr key={el.id}>
+                        <tr onClick={() => handleRestaurantSelect(el.id)} key={el.id}>
                             <td>{el.name}</td>
                             <td>{el.location}</td>
                             <td>{"$".repeat(el.price_range)}</td>
-                            <td>reviews</td>
-                            <td><button onClick={() => handleUpdate(el.id)} className="btn btn-warning">Update</button></td>
-                            <td><button className="btn btn-danger" onClick={() => handleDelete(el.id)}>Delete</button></td>
+                            <td>{renderRating(el)}</td>
+                            <td><button onClick={(e) => handleUpdate(e, el.id)} className="btn btn-warning">Update</button></td>
+                            <td><button className="btn btn-danger" onClick={(e) => handleDelete(e, el.id)}>Delete</button></td>
                         </tr>
                        )
                     })}
