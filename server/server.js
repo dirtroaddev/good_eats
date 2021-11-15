@@ -5,6 +5,7 @@ const db = require('./db');
 const app = express();
 
 const port = process.env.PORT || 3002;
+var server_host = process.env.HOST || '0.0.0.0';
 
 app.use(cors());
 app.use(express.json());
@@ -115,6 +116,6 @@ app.post('/api/v1/restaurants/:id/addReview', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
+app.listen(port,server_host, () => {
     console.log(`Server Running On Port ${port}`)
 });
