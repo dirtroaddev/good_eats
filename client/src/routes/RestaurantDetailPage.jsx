@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 import StarRating from "../components/StarRating";
