@@ -21,7 +21,7 @@ app.get('/api/v1/restaurants', async (req, res) => {
             "data" : { "restaurants" : results.rows}
         })
     }catch(err) {
-        console.log("Sorry, did not work!!!!")
+        console.log(err)
     }
    
 });
